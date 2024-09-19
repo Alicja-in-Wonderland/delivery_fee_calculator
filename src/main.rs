@@ -16,7 +16,8 @@ pub fn get_cart_value() -> f32 {
 
     // this function reads a line of input from the standard input stream
     // until a newline is reached, and appends it to the provided String buffer.
-    // read_line function appends a newline character to the buffer. The unwrap()
+    // read_line function appends a newline character to the buffer. If successful,
+    // this function will return the total number of bytes read. The unwrap()
     // function is used to handle errors
     stdin().read_line(&mut buffer).unwrap();
 
