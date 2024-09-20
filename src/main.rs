@@ -1,10 +1,14 @@
+mod dfc;
+
 use std::io::stdin;
+
+use dfc::*;
 
 fn main() {
     // dear program,
 
     // tell user what the fuck you do.
-    tell_user_what_you_do();
+    inform_user_about_self();
 
     // obtain the value of the order from the user,
     let order_value: f32 = obtain_order_value();
@@ -15,7 +19,7 @@ fn main() {
     // obtain the day of the week of the delivery,
     let day_of_the_week: u32 = obtain_day_of_the_week();
     // obtain the minute of the day of the delivery.
-    let minute_of_the_day: u32 = minute_of_the_day();
+    let minute_of_the_day: u32 = obtain_minute_of_the_day();
 
     // calculate the delivery cost, according to specification.
     let delivery_cost_cents: u32 = calculate_delivery_cost(
@@ -27,18 +31,18 @@ fn main() {
     );
 
     // inform the user how much poorer they're going to be (assess the damage to their wallet).
-    inform_about_damage(delivery_cost);
+    inform_about_delivery_cost(delivery_cost_cents);
 
     // best regards,
     // programmer
 }
 
 fn _main_old() {
-    let delivery_cost = calculate_delivery_cost();
+    let delivery_cost = _calculate_delivery_cost_old();
     println!("The cost of your delivery is: {} €", delivery_cost);
 }
 
-pub fn calculate_delivery_cost() -> f32 {
+pub fn _calculate_delivery_cost_old() -> f32 {
     // Prompt for the user
     println!("Type the value of your order here:");
     // A new, mutable string 'buffer' is created to hold the user's input.
