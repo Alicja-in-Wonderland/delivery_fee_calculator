@@ -1,26 +1,18 @@
 mod dfc;
+mod interface;
 
 use dfc::*;
 
 fn main() {
-    // dear program,
+    interface::inform_user_about_self();
 
-    // tell user what the fuck you do.
-    inform_user_about_self();
+    let order_value = interface::obtain_order_value();
+    let distance_meters = interface::obtain_distance();
+    let number_of_articles = interface::obtain_number_of_aricles();
+    let day_of_the_week = interface::obtain_day_of_the_week();
+    let hour = interface::obtain_hour();
 
-    // obtain the value of the order from the user,
-    let order_value: f32 = obtain_order_value();
-    // obtain the delivery distance in meters from the user,
-    let distance_meters: u32 = obtain_distance();
-    // obtain the number of separate articles (pieces, items) their order consists of,
-    let number_of_articles: u32 = obtain_number_of_aricles();
-    // obtain the day of the week of the delivery,
-    let day_of_the_week: u32 = obtain_day_of_the_week();
-    // obtain hour of the day:
-    let hour: u32 = obtain_hour();
-
-    // calculate the delivery cost, according to specification.
-    let cost: f32 = calculate_delivery_cost(
+    let cost: f32 = dfc::full_cost(
         order_value,
         distance_meters,
         number_of_articles,
@@ -28,9 +20,6 @@ fn main() {
         hour,
     );
 
-    // inform the user how much poorer they're going to be (assess the damage to their wallet).
-    inform_about_delivery_cost(cost);
-
-    // best regards,
-    // programmer
+    interface::inform_about_delivery_cost(cost);
 }
+
