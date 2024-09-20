@@ -1,7 +1,5 @@
 mod dfc;
 
-use std::io::stdin;
-
 use dfc::*;
 
 fn main() {
@@ -18,22 +16,21 @@ fn main() {
     let number_of_articles: u32 = obtain_number_of_aricles();
     // obtain the day of the week of the delivery,
     let day_of_the_week: u32 = obtain_day_of_the_week();
-    // obtain the minute of the day of the delivery.
-    let minute_of_the_day: u32 = obtain_minute_of_the_day();
+    // obtain hour of the day:
+    let hour: u32 = obtain_hour();
 
     // calculate the delivery cost, according to specification.
-    let delivery_cost_cents: u32 = calculate_delivery_cost(
+    let cost: f32 = calculate_delivery_cost(
         order_value,
         distance_meters,
         number_of_articles,
         day_of_the_week,
-        minute_of_the_day,
+        hour,
     );
 
     // inform the user how much poorer they're going to be (assess the damage to their wallet).
-    inform_about_delivery_cost(delivery_cost_cents);
+    inform_about_delivery_cost(cost);
 
     // best regards,
     // programmer
 }
-

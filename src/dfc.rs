@@ -43,19 +43,14 @@ pub fn obtain_day_of_the_week() -> u32 {
     }
 }
 
-pub fn obtain_minute_of_the_day() -> u32 {
+pub fn obtain_hour() -> u32 {
     println!("What time do you want to receive your order?");
     println!("Type the hour (0..=23):");
     let hour: u32 = read_line().parse().expect("Expected positive integer");
     if hour >= 24 {
         panic!("Hour must be between 0 and 23.")
     }
-    println!("Type the minutes:");
-    let minute: u32 = read_line().parse().expect("Expected positive integer");
-    if minute >= 60 {
-        panic!("Minute must be between 0 and 59.")
-    }
-    hour * 60 + minute
+    hour
 }
 
 pub fn calculate_delivery_cost(
@@ -63,16 +58,61 @@ pub fn calculate_delivery_cost(
     distance: u32,
     articles: u32,
     day: u32,
-    minute: u32,
-) -> u32 {
-    let cost_from_value = { todo!() };
-    let cost_from_distance = { todo!() };
-    let cost_from_articles = { todo!() };
-    let cost_from_day = { todo!() };
-    let cost_from_minute = { todo!() };
+    hour: u32,
+) -> f32 {
+    // The delivery is free (0€) when the cart value is equal or more than 200€.
+    if value >= 200.0 {
+        0.0
+    } else {
+        let cost_from_articles = {
+            // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item.
+            let above_5_surcharge = if articles >= 5 {
+                (articles - 4) * 50
+            } else {
+                0
+            };
 
-    // cost_from_articles + cost_from_day + cost_from_distance + cost_from_minute + cost_from_value;
-    todo!()
+            // An extra "bulk" fee applies for more than 12 items of 1,20€.
+            let bulk_fee = if articles > 12 { 12 * 120 } else { 0 };
+
+            (above_5_surcharge + bulk_fee) as f32
+        };
+
+        let cost_from_distance = {
+            // As long as the distance doesn't exceed 1km the delivery fee is 2€.
+            let base_delivery_fee = 2;
+
+            // If the delivery distance is longer than 1km, 1€ is added for every additional 500 meters started.
+            let additional_fee = {
+                let distance_extention = distance.saturating_sub(1000);
+
+                let full_half_kms = distance_extention / 500;
+                let there_are_additional_meters = distance_extention % 500 != 0;
+                full_half_kms + if there_are_additional_meters { 1 } else { 0 }
+            };
+
+            (base_delivery_fee + additional_fee) as f32
+        };
+
+        // If the cart value is less than 10€, a small order surcharge is added to the delivery price. The surcharge is
+        // the difference between the cart value and 10€. For example if the cart value is 8.90€, the surcharge will be 1.10€.
+        let cost_from_value = if value < 10.0 { 10.0 - value } else { 0.0 };
+
+        let friday_multiplier = {
+            // During the Friday rush, 3 - 7 PM, the delivery fee (the total fee including possible surcharges)
+            // will be multiplied by 1.2x.
+            if day == 5 && (15..19).contains(&hour) {
+                1.2
+            } else {
+                1.0
+            }
+        };
+
+        // The delivery fee can never be more than 15€, including possible surcharges.
+
+        let fee = (cost_from_articles + cost_from_distance + cost_from_value) * friday_multiplier;
+        fee.clamp(0.0, 15.0)
+    }
 }
 
 pub fn _calculate_delivery_cost_old() -> f32 {
@@ -131,8 +171,8 @@ pub fn _calculate_delivery_cost_old() -> f32 {
     delivery_cost
 }
 
-pub fn inform_about_delivery_cost(cost_cents: u32) {
-    todo!()
+pub fn inform_about_delivery_cost(cost: f32) {
+    println!("The delivery fee is: {} €", cost);
 }
 
 fn read_line() -> String {
