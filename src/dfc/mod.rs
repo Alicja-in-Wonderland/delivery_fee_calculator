@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 pub fn full_cost(value: f32, distance: u32, articles: u32, day: u32, hour: u32) -> f32 {
     // The delivery is free (0€) when the cart value is equal or more than 200€.
     if value >= 200.0 {
