@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-pub fn full_cost(value: f32, distance: u32, articles: u32, day: u32, hour: u32) -> f32 {
+pub fn full_cost(value: f32, distance: u32, articles: f32, day: u32, hour: u32) -> f32 {
     // The delivery is free (0€) when the cart value is equal or more than 200€.
     if value >= 200.0 {
         0.0
@@ -15,18 +15,18 @@ pub fn full_cost(value: f32, distance: u32, articles: u32, day: u32, hour: u32) 
     }
 }
 
-fn cost_from_articles(articles: u32) -> f32 {
+fn cost_from_articles(articles: f32) -> f32 {
     // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item.
-    let above_5_surcharge = if articles >= 5 {
-        (articles - 4) * 50
+    let above_5_surcharge = if articles >= 5.0 {
+        (articles - 4.0) * 0.5
     } else {
-        0
+        0.0
     };
 
     // An extra "bulk" fee applies for more than 12 items of 1,20€.
-    let bulk_fee = if articles > 12 { 12 * 120 } else { 0 };
+    let bulk_fee = if articles > 12.0 { 12.0 * 120.0 } else { 0.0 };
 
-    (above_5_surcharge + bulk_fee) as f32
+    above_5_surcharge + bulk_fee
 }
 
 fn cost_from_distance(distance: u32) -> f32 {

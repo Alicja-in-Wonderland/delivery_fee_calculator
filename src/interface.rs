@@ -16,7 +16,7 @@ pub fn obtain_distance() -> u32 {
     read_line().parse().expect("Expected positive integer")
 }
 
-pub fn obtain_number_of_aricles() -> u32 {
+pub fn obtain_number_of_aricles() -> f32 {
     println!("Type the number of articles in your cart:");
     read_line().parse().expect("Expected positive integer")
 }
