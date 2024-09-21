@@ -1,8 +1,6 @@
 mod dfc;
 mod interface;
 
-use dfc::*;
-
 fn main() {
     interface::inform_user_about_self();
 
